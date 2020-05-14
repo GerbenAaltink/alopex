@@ -1,0 +1,15 @@
+{
+  "name": "dataset",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^7.1.2",
+    "sqlite-async": "^1.0.12"
+  }
+}
