@@ -1,4 +1,4 @@
-# dataset.js
+# Alopex
 
 This libary is a copy of https://dataset.readthedocs.io/en/latest/ 
 
@@ -11,10 +11,7 @@ Mising futures:
  - only support for SQLITE. Original library supports more 
 
 ## Supported filters
-Filters used below can be used by update, upsert, delete and count. Eg:
-```
-db.myTable.search(null, name__like="%test%")
-```
+Filters used below can be used by update, upsert, delete and count.
  - __eq
  - __lt
  - __lte
@@ -22,19 +19,23 @@ db.myTable.search(null, name__like="%test%")
  - __gte
  - __like (Is case instenstive. Is default sqlite behavior
 
+Example usage:
+```
+db.myTable.search(null, name__like="%test%")
+```
 
 
 ## Connecting to a database
 Giving up a database name to connect is optional. If none given, ':memory:' is used.
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 ```
 
 ## Insert records
 This code will create a new table called `myNewTable` and will add the required fields automatically
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
     console.info('Inserted record has primary key', pk)
@@ -44,7 +45,7 @@ dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
 ## Select records
 ### Select all fields by using null
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 dataSet.myNewTable.select(null, {'name': 'John'}).then(pk=>{
     console.info('Inserted record has primary key', pk)
@@ -52,25 +53,25 @@ dataSet.myNewTable.select(null, {'name': 'John'}).then(pk=>{
 ```
 ### Select specific fields by array of field names
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(rows=>{
     console.info('Found rows', rows)
 })
 ```
 
-Delete records
+## Delete records
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
     console.info('Total deleted', changeCount)
 })
 ```
 
-Count records
+## Count records
 ```
-const connect = require('./dataset')
+const connect = require('./alopex')
 const dataSet = connect()
 dataSet.myNewTable.count{'name': 'John'}).then(total=>{
     console.info('Total records matcing criterea', total)
