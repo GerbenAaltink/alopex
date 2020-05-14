@@ -10,6 +10,19 @@ Mising futures:
  - creating auto indexes (in development)
  - only support for SQLITE. Original library supports more 
 
+## Supported filters
+Filters used below can be used by update, upsert, delete and count. Eg:
+```
+db.myTable.search(null, name__like="%test%")
+```
+ - __eq
+ - __lt
+ - __lte
+ - __gt
+ - __gte
+ - __like (Is case instenstive. Is default sqlite behavior
+
+
 
 ## Connecting to a database
 Giving up a database name to connect is optional. If none given, ':memory:' is used.
@@ -18,7 +31,7 @@ const connect = require('./dataset')
 const dataSet = connect()
 ```
 
-## Inserting data to table
+## Insert records
 This code will create a new table called `myNewTable` and will add the required fields automatically
 ```
 const connect = require('./dataset')
@@ -28,8 +41,8 @@ dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
 })
 ```
 
-## Selecting data of a table
-### Select all fields
+## Select records
+### Select all fields by using null
 ```
 const connect = require('./dataset')
 const dataSet = connect()
@@ -37,12 +50,29 @@ dataSet.myNewTable.select(null, {'name': 'John'}).then(pk=>{
     console.info('Inserted record has primary key', pk)
 })
 ```
-
-### Select specific fields
+### Select specific fields by array of field names
 ```
 const connect = require('./dataset')
 const dataSet = connect()
 dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(rows=>{
     console.info('Found rows', rows)
+})
+```
+
+Delete records
+```
+const connect = require('./dataset')
+const dataSet = connect()
+dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
+    console.info('Total deleted', changeCount)
+})
+```
+
+Count records
+```
+const connect = require('./dataset')
+const dataSet = connect()
+dataSet.myNewTable.count{'name': 'John'}).then(total=>{
+    console.info('Total records matcing criterea', total)
 })
 ```
