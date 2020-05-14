@@ -1,4 +1,4 @@
-# dataset.js
+# Alopex
 
 This libary is a copy of https://dataset.readthedocs.io/en/latest/ 
 
