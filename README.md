@@ -21,59 +21,50 @@ Filters used below can be used by update, upsert, delete and count.
 
 Example usage:
 ```
-db.myTable.search(null, name__like="%test%")
+db.myTable.select(null, name__like="%test%")
 ```
 
 
-## Connecting to a database
-Giving up a database name to connect is optional. If none given, ':memory:' is used.
+## Connect
+Giving up a database name to connect is optional. Default database if none given is ':memory:'
 ```
 const connect = require('./alopex')
 const dataSet = connect()
 ```
 
-## Insert records
-This code will create a new table called `myNewTable` and will add the required fields automatically
+## Insert
+This code will create a new table called `myNewTable` and will add the required fields automatically.
 ```
-const connect = require('./alopex')
-const dataSet = connect()
 dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
     console.info('Inserted record has primary key', pk)
 })
 ```
 
-## Select records
+## Select
 ### Select all fields by using null
 ```
-const connect = require('./alopex')
-const dataSet = connect()
-dataSet.myNewTable.select(null, {'name': 'John'}).then(pk=>{
-    console.info('Inserted record has primary key', pk)
+dataSet.myNewTable.select(null, {'name': 'John'}).then(records=>{
+    console.info('Found records', records)
 })
 ```
 ### Select specific fields by array of field names
 ```
-const connect = require('./alopex')
-const dataSet = connect()
-dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(rows=>{
-    console.info('Found rows', rows)
+dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(records=>{
+    console.info('Found records', records)
 })
 ```
 
-## Delete records
+## Delete 
 ```
-const connect = require('./alopex')
-const dataSet = connect()
 dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
     console.info('Total deleted', changeCount)
 })
 ```
 
-## Count records
+## Count
 ```
-const connect = require('./alopex')
-const dataSet = connect()
 dataSet.myNewTable.count{'name': 'John'}).then(total=>{
     console.info('Total records matcing criterea', total)
 })
 ```
+
