@@ -11,10 +11,7 @@ Mising futures:
  - only support for SQLITE. Original library supports more 
 
 ## Supported filters
-Filters used below can be used by update, upsert, delete and count. Eg:
-```
-db.myTable.search(null, name__like="%test%")
-```
+Filters used below can be used by update, upsert, delete and count.
  - __eq
  - __lt
  - __lte
@@ -22,6 +19,10 @@ db.myTable.search(null, name__like="%test%")
  - __gte
  - __like (Is case instenstive. Is default sqlite behavior
 
+Example usage:
+```
+db.myTable.search(null, name__like="%test%")
+```
 
 
 ## Connecting to a database
@@ -59,7 +60,7 @@ dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(rows=>{
 })
 ```
 
-Delete records
+## Delete records
 ```
 const connect = require('./alopex')
 const dataSet = connect()
@@ -68,7 +69,7 @@ dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
 })
 ```
 
-Count records
+## Count records
 ```
 const connect = require('./alopex')
 const dataSet = connect()
