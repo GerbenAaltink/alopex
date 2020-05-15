@@ -2,12 +2,11 @@
 
 This libary is a copy of https://dataset.readthedocs.io/en/latest/ 
 
-Futures on top of the original library:
+Features on top of the original library:
  - filtering by __like or __gt like in Django ORM
  - limit fields you want to have returned while fetching data 
 
-Mising futures:
- - creating auto indexes (in development)
+Missing features:
  - only support for SQLITE. Original library supports more 
 
 ## Supported filters
