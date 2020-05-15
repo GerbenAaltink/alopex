@@ -1,4 +1,5 @@
 const Parameters = require('./parameters')
+const Extra = require('./extra')
 
 class Query {
     constructor(table, data, where)
@@ -13,6 +14,10 @@ class Query {
          
          this.whereString = this.where.getAssignString('AND')
          this.questionMarkString = this.data.getQuestionMarkString()
+          
+         this.extra = new Extra(where)
+         this.extraString = this.extra.string
+
          this.values = []
         
 
@@ -49,13 +54,13 @@ class SelectQuery extends Query {
             "FROM",
             `"${this.name}"`,
             this.whereString ? "WHERE" : '',
-            this.whereString
+            this.whereString,
+            this.extraString
         ].join(' ')
     }
     async execute() {
         return await this.all()
     }
-
 }
 
 

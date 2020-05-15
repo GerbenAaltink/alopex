@@ -2,16 +2,26 @@ const Key = require('./key')
 
 class Parameters {
 
+
     constructor(obj)
     {
         let keys = []
         this.obj = obj || {}
         this.values = []
-
+        this.extra = {}
+        this.keyNames = []
+        this.values = []
         if(!Array.isArray(this.obj))
         {
-            this.keyNames = Object.keys(this.obj)
-            this.values = Object.values(this.obj)
+            Object.entries(this.obj).forEach(entry=>{
+                let key = entry[0]
+                let value = entry[1]
+                if(!key.startsWith('_'))
+                {
+                    this.keyNames.push(key)
+                    this.values.push(value)
+                }
+            })
         }else{
             this.keyNames = this.obj
         }
@@ -21,6 +31,7 @@ class Parameters {
             this.keys.push(new Key(key))
         })
     }
+    
     getAssignString(glue) {
         let result = []
         this.keys.forEach(key=>{
