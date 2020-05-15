@@ -31,6 +31,15 @@ class Parameters {
             this.keys.push(new Key(key))
         })
     }
+
+    getIndexableColumnNames()
+    {
+        return this.keys.filter((key)=>{
+            return key.filter === 'eq'
+        }).map((key)=>{
+            return key.name
+        })
+    }
     
     getAssignString(glue) {
         let result = []

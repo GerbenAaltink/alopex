@@ -33,14 +33,22 @@ class Query {
     }
     async execute()
     {
-        await this.table.ensure(this.data.keyNames)
-        await this.table.ensure(this.where.keyNames)
-        return await this.db.run(this.getQueryString(), this.values)
+        return this.table.ensure(this.data.keyNames).then(()=>{
+            return this.table.ensure(this.where.keyNames).then(()=>{
+                return this.db.run(this.getQueryString(), this.values)
+            })
+        })
     }
-    async all()
-    {   await this.table.ensure(this.data.keyNames)
-        await this.table.ensure(this.where.keyNames)
-        return await this.db.all(this.getQueryString(), this.values)
+    all()
+    {   
+        return this.table.ensure(this.data.keyNames).then(()=>{
+            return this.table.ensure(this.where.keyNames).then(()=>{
+                return this.table.ensureIndex(this.where.getIndexableColumnNames()).then(()=>{
+                    return this.db.all(this.getQueryString(), this.values)
+                })
+            })
+        })
+            
     }
 
 

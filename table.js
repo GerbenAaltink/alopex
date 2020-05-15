@@ -58,26 +58,31 @@ class Table {
         const query = new Query.CountQuery(this, null, where)
         return await query.execute()
     }
-    async createIndex(names)
+    ensureIndex(names)
     {
-        await this.ensure()
-        names.sort()
-        let indexName = names.join('_')
-        if(this.indexes.indexOf(indexName) !== -1)
-            return false
+        return new Promise((resolve, reject)=>{
+            if(names.length < 2)
+                return resolve(false)
+            names.sort()
+            let indexName = 'idx_' + names.join('_')
+            if(this.indexes.indexOf(indexName) !== -1)
+            {
+                return resolve(false)
+            }
+            let nameString = names.join(',')
+            
+            let query = [
+                'CREATE INDEX',
+                indexName,
+                'ON',
+                `"${this.name}"`,
+                `(${nameString})`
+            ].join(' ')
+            this.indexes.push(indexName)
+            this.db.run(query, []).then(resolve)
+            
+        })
 
-        let nameString = names.join(',')
-        
-        let query = [
-            'CREATE INDEX',
-            indexName,
-            'ON',
-            `"{this.name}"`,
-            `(nameString)`
-        ].join(' ')
-        this.indexes.push(indexName)
-        await this.db.run(query, [])
-        return true
     }
     async ensure(obj)
     {
@@ -86,6 +91,7 @@ class Table {
             this.initialized = true
             await this.createTable()
             this.columns = await this.getColumns()
+            this.indexes = await this.getIndexes()
         }
         obj = obj || {}
         let params = new Parameters(obj)
@@ -98,8 +104,10 @@ class Table {
         })
         if(promises.length)
             await Promise.all(promises)
+        
         return this
     }
+
     createTable(){
         return this.db.run(`CREATE TABLE IF NOT EXISTS "${this.name}" (id INTEGER PRIMARY KEY)`)
     }
@@ -110,6 +118,14 @@ class Table {
             names.push(row.name)
         })
         return names 
+    }
+    getIndexes() {
+        return this.db.all('select name FROM sqlite_master WHERE tbl_name = ? AND type="index"', [this.name]).then(indexes=>{
+            return indexes.map((row)=>{
+                return row.name
+            })
+        })
+
     }
     async addColumn(name)
     {
