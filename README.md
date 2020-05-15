@@ -20,9 +20,11 @@ Filters used below can be used by update, upsert, delete and count.
 
 Example usage:
 ```
-db.myTable.select(null, name__like="%test%")
+db.myTable.find(null, name__like="%test%")
 ```
 ## Indexes
+
+### Automatic create
 Find record method creates indexes automatically.
 For example: 
 ```
@@ -30,6 +32,12 @@ dataSet.find(null, 'z': 1, 'y__eq': 2})
 ```
 will create index `idx_y_z`. 
 It only applies to fields filtered with `=` operator. 
+
+### Manual create
+dataSet.myNewTable.createIndex(['age', 'length']).then(isIndexCreated=>{
+    console.info('Created new index is ', isIndexCreated)
+})
+
 
 ## Connect
 Giving up a database name to connect is optional. Default database if none given is ':memory:'
@@ -47,16 +55,31 @@ dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
 ```
 
 ## Select
-### Select all fields by using null
+### Select all columns by using null
 ```
-dataSet.myNewTable.select(null, {'name': 'John'}).then(records=>{
+dataSet.myNewTable.find(null, {'name': 'John'}).then(records=>{
     console.info('Found records', records)
 })
 ```
-### Select specific fields by array of field names
+### Select specific columns by column of field names
 ```
-dataSet.myNewTable.select(['surname'], {'name': 'John'}).then(records=>{
+dataSet.myNewTable.find(['surname'], {'name': 'John'}).then(records=>{
     console.info('Found records', records)
+})
+```
+
+## Update
+### Update using array of column names
+```
+dataSet.myNewTable.update({'name': 'John', 'id': 5}, ['id']).then(updateCount=>{
+    console.info('Updated records', updateCount)
+})
+```
+
+### Update using object
+```
+dataSet.myNewTable.update({'name': 'John'}, {'surname__like': 'Snow'}).then(updateCount=>{
+    console.info('Updated records', updateCount)
 })
 ```
 
