@@ -69,6 +69,32 @@ dataSet.myNewTable.find(['surname'], {'name': 'John'}).then(records=>{
     console.info('Found records', records)
 })
 ```
+### Order by ascending
+```
+dataSet.myNewTable.find(null, {'_orderBy': 'id'}).then(records=>{
+    console.info('Found records', records)
+})
+```
+### Order by descending
+Descending sorting is done by adding `-` in front of the column name.
+```
+dataSet.myNewTable.find(null, {'_orderBy': '-id'}).then(records=>{
+    console.info('Found records', records)
+})
+```
+### Limit
+```
+dataSet.myNewTable.find(null, {'_limit': 100}).then(records=>{
+    console.info('Found 100 records', records)
+})
+```
+### Offset 
+Using _offset without _limit is ignored.
+```
+dataSet.myNewTable.find(null, {'_limit': 100, '_offset': 100}).then(records=>{
+    console.info('Found 100 records starting from offset 100', records)
+})
+```
 
 ## Update
 ### Update using array of column names
@@ -84,7 +110,6 @@ dataSet.myNewTable.update({'name': 'John'}, {'surname__like': 'Snow'}).then(upda
     console.info('Updated records', updateCount)
 })
 ```
-
 ## Delete 
 ```
 dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
@@ -95,7 +120,7 @@ dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
 ## Count
 ```
 dataSet.myNewTable.count{'name': 'John'}).then(total=>{
-    console.info('Total records matcing criterea', total)
+    console.info('Total records matcing criteria', total)
 })
 ```
 
