@@ -16,7 +16,7 @@ Filters used below can be used by update, upsert, delete and count.
  - __lte
  - __gt
  - __gte
- - __like (Is case instenstive. Is default sqlite behavior
+ - __like (Is case instenstive. Is default sqlite behavior)
 
 Example usage:
 ```
@@ -34,10 +34,12 @@ will create index `idx_y_z`.
 It only applies to fields filtered with `=` operator. 
 
 ### Manual create
+Promise returns false if index already exist. 
+```
 dataSet.myNewTable.createIndex(['age', 'length']).then(isIndexCreated=>{
     console.info('Created new index is ', isIndexCreated)
 })
-
+```
 
 ## Connect
 Giving up a database name to connect is optional. Default database if none given is ':memory:'
