@@ -23,7 +23,14 @@ Example usage:
 ```
 db.myTable.select(null, name__like="%test%")
 ```
-
+## Indexes
+Find record method creates indexes automatically.
+For example: 
+```
+dataSet.find(null, 'z': 1, 'y__eq': 2})
+```
+will create index `idx_y_z`. 
+It only applies to fields filtered with `=` operator. 
 
 ## Connect
 Giving up a database name to connect is optional. Default database if none given is ':memory:'
