@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/github/GerbenAaltink/alopex.png)](https://travis-ci.com/github/GerbenAaltink/alopex)
+
+
 # Alopex
 
 This libary is a copy of https://dataset.readthedocs.io/en/latest/ 
