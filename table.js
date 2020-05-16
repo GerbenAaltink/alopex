@@ -1,6 +1,6 @@
 const Query = require('./query')
 const Parameters = require('./parameters')
-
+const Cache = require('./cache')
 /**
  * Represents a table.
  * 
@@ -24,6 +24,7 @@ class Table {
         this.indexes = []
         this.columns = []
         this.initialized = false
+        this.cache = new Cache(2)
     }
     /**
      * Creates new record. Supported field types:
@@ -40,7 +41,10 @@ class Table {
      */
     insert(data) {
         const query = new Query.InsertQuery(this, data)
-        return query.execute()
+        return query.execute().then((primaryKey)=>{
+            this.cache.flush()
+            return primaryKey
+        })
     }
     /**
      * Find multiple records
@@ -59,8 +63,10 @@ class Table {
      * @returns {Object[]} Array of found records
     */
     find(columnNames, where) {
-        let query = new Query.SelectQuery(this, columnNames, where)
-        return query.execute()
+        return this.cache.get(['find', columnNames, where], ()=>{
+            let query = new Query.SelectQuery(this, columnNames, where)
+            return query.execute()    
+        })
     }
     /**
      * Find one record
@@ -78,9 +84,11 @@ class Table {
     findOne(columnNames, where) {
         let whereCriteria = where ? where : {}
         whereCriteria['_limit'] = 1
-        let query = new Query.SelectQuery(this, columnNames, where)
-        return query.execute().then(rows => {
-            return rows[0]
+        return this.cache.get(['findOne', columnNames, whereCriteria], ()=>{
+            let query = new Query.SelectQuery(this, columnNames, where)
+            return query.execute().then(rows => {
+                return rows[0]
+            })
         })
     }
     /**
@@ -117,22 +125,32 @@ class Table {
     update(data, where) {
         // returns update count 
         const query = new Query.UpdateQuery(this, data, where)
-        return query.execute()
+        return query.execute().then((updatedCount)=>{
+            this.cache.flush()
+            return updatedCount
+        })
     }
     delete(where) {
         // returns deleted count 
         const query = new Query.DeleteQuery(this, null, where)
-        return query.execute()
+        return query.execute().then((deletedCount)=>{
+            this.cache.flush()
+            return deletedCount
+        })
     }
     upsert(data, where) {
         // returns true if updated, else new primary key
         this.update(data, where).then(changeCount => {
             return changeCount ? true : this.insert(data)
+        }).then(()=>{
+            this.cache.flush()
         })
     }
     count(where) {
-        const query = new Query.CountQuery(this, null, where)
-        return query.execute()
+        return this.cache.get(['count', where], ()=>{
+            const query = new Query.CountQuery(this, null, where)
+            return query.execute()
+        })
     }
     ensureIndex(names) {
         return new Promise((resolve, reject) => {
@@ -204,7 +222,9 @@ class Table {
             `"${name}";`
         ].join(' ')
         this.columns.push(name)
-        return this.db.run(query, [])
+        return this.db.run(query, []).then(()=>{
+            this.cache.flush()
+        })
 
     }
 }

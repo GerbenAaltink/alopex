@@ -72,4 +72,16 @@ describe('Find one method', async () => {
             assert.ok(Object.keys(record).length == 2)
         })
     })
+    describe('cache', async () => {
+        it('cache hits two times and misses once', async () => {
+            await dataSet.table.findOne(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            await dataSet.table.findOne(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            const record = await dataSet.table.findOne(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            assert.ok(dataSet.table.cache.misses == 1)
+            assert.ok(dataSet.table.cache.hits == 2)
+            assert.ok(record.integer == 2)
+            assert.ok(Object.keys(record).length == 2)
+        })
+    })
+    
 })

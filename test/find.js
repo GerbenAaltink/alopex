@@ -78,4 +78,17 @@ describe('Find method', async () => {
             assert.ok(Object.keys(records[0]).length == 2)
         })
     })
+    
+    describe('cache', async () => {
+        it('cache hits two times and misses once', async () => {
+            await dataSet.table.find(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            await dataSet.table.find(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            const records = await dataSet.table.find(['string', 'integer'], { '_limit': 2, '_orderBy': '-id', 'id__gt': 1 })
+            assert.ok(dataSet.table.cache.misses == 1)
+            assert.ok(dataSet.table.cache.hits == 2)
+            assert.ok(records[0].integer == 2)
+            assert.ok(records[1].integer == 0)
+            assert.ok(Object.keys(records[0]).length == 2)
+        })
+    })
 })
