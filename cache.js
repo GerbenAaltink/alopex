@@ -41,7 +41,6 @@ class Cache {
         this._updateRecentKey(cacheKey)
         if (this._cached[cacheKey] !== undefined) {
             this.hits++
-            console.info('HITT!!!')
             return Promise.resolve(this._cached[cacheKey])
         }
         return promise().then((value) => {
