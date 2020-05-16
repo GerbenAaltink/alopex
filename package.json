@@ -1,6 +1,6 @@
 {
   "name": "alopex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "sqlite-async": "^1.0.12"
+    "sqlite-async": "^1.0.12",
+    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
     "jsdoc": "^3.6.4",
