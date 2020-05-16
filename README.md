@@ -1,4 +1,4 @@
-![logo](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)
+![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)
 
 # Alopex
 
