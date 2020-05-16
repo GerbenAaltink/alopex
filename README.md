@@ -108,20 +108,20 @@ dataSet.myNewTable.update({'name': 'John', 'id': 5}, ['id']).then(updateCount=>{
 
 ### Update using object
 ```
-dataSet.myNewTable.update({'name': 'John'}, {'surname__like': 'Snow'}).then(updateCount=>{
+dataSet.myNewTable.update({'name': 'John'}, {'surname__like': '%Snow%'}).then(updateCount=>{
     console.info('Updated records', updateCount)
 })
 ```
 ## Delete 
 ```
-dataSet.myNewTable.delete{'name': 'John'}).then(changeCount=>{
+dataSet.myNewTable.delete({'name': 'John'}).then(changeCount=>{
     console.info('Total deleted', changeCount)
 })
 ```
 
 ## Count
 ```
-dataSet.myNewTable.count{'name': 'John'}).then(total=>{
+dataSet.myNewTable.count({'name': 'John'}).then(total=>{
     console.info('Total records matcing criteria', total)
 })
 ```
