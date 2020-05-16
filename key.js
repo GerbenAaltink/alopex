@@ -1,7 +1,6 @@
 class Key {
-    
-    constructor(name, value)
-    {
+
+    constructor(name, value) {
         this.filters = {
             'eq': '=',
             'lt': '<',
@@ -15,8 +14,7 @@ class Key {
         this.value = value
         this.filter = (parts.length > 1 ? parts[1] : 'eq').toLowerCase()
         this.operator = this.filters[this.filter]
-        if(!this.operator)
-        {
+        if (!this.operator) {
             this.operator = '='
             this.filter = 'eq'
         }

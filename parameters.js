@@ -3,62 +3,92 @@ const Key = require('./key')
 class Parameters {
 
 
-    constructor(obj)
-    {
-        let keys = []
-        this.obj = obj || {}
+    /**
+     * 
+     * @param {string, Array, Object} obj 
+     */
+    constructor(obj) {
+        this.obj = this.normalalizeObj(obj)
+
         this.values = []
         this.extra = {}
         this.keyNames = []
-        this.values = []
-        if(!Array.isArray(this.obj))
-        {
-            Object.entries(this.obj).forEach(entry=>{
-                let key = entry[0]
-                let value = entry[1]
-                if(!key.startsWith('_'))
-                {
-                    this.keyNames.push(key)
-                    this.values.push(value)
-                }
-            })
-        }else{
+
+        if (Array.isArray(this.obj)) {
+            // ['field1', 'field2'] format
             this.keyNames = this.obj
+        } else {
+            // {'field':'value'} format
+
+            Object.entries(this.obj).filter(
+                // Don't add fields starting with '_'. This is reserved for ordering / limit / offset.
+                entry => !entry[0].startsWith('_')
+            ).forEach(entry => {
+                this.keyNames.push(entry[0])
+                this.values.push(entry[1])
+            })
         }
         this.isArray = this.keyNames.length > this.values.length
-        this.keys = []
-        this.keyNames.forEach(key=>{
-            this.keys.push(new Key(key))
-        })
+        this.keys = this.keyNames.map(key => new Key(key))
     }
 
-    getIndexableColumnNames()
-    {
-        return this.keys.filter((key)=>{
-            return key.filter === 'eq'
-        }).map((key)=>{
-            return key.name
-        })
+    /**
+     * Convert object to valid value
+     * 
+     * @param {*} obj may be array, object or string
+     * @returns {Array, Object}
+     */
+    normalalizeObj(obj) {
+        if (!obj)
+            return {}
+        if (typeof (obj) === 'string')
+            return [obj]
+        return obj
     }
-    
+
+    /**
+     * Columns filtered by __eq should be indexed.
+     * 
+     * @returns {Array} column names which are filtered with __eq
+     */
+    getIndexableColumnNames() {
+        return this.keys.filter(
+            (key) => key.filter === 'eq'
+        ).map(
+            (key) => key.name
+        )
+    }
+
+    /**
+     * Get assignment string to be used in SQL queries.
+     * E.g: "column1" = ?, "column2" = ?
+     * 
+     * @param {string} glue default is ', '
+     * @returns {string}
+     */
     getAssignString(glue) {
-        let result = []
-        this.keys.forEach(key=>{
-            result.push(key.string)
-        })
-        return result.join(glue || ', ') 
+        return this.keys.map(key => key.string).join(glue || ', ')
     }
+
+    /**
+     * get column string to be used in SQL queries
+     * 
+     * @returns {string} "*" if no fields specified. Else '"column1", "column2"'
+     */
     getColumnString() {
-        if(this.keys.length === 0)
+        if (this.keys.length === 0)
             return "*"
         return '"' + this.keyNames.join('","') + '"'
     }
-    getQuestionMarkString(){
-        let questionMarks = []
-        this.keys.forEach(()=>{
-            questionMarks.push('?')
-        })
-        return questionMarks.join(',')
+
+    /**
+     * Create question mark string with same length as columns to filter to be used in SQL queries
+     * E.g: "?,?,?"" if you had three columns
+     * 
+     * @returns {string}
+     */
+    getQuestionMarkString() {
+        return this.keys.map(() => '?').join(',')
     }
 }
 

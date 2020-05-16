@@ -2,53 +2,49 @@ const Parameters = require('./parameters')
 const Extra = require('./extra')
 
 class Query {
-    constructor(table, data, where)
-    {
-         this.table  = table
-         this.db = table.db
-         this.name = this.table.name
-         this.data = new Parameters(data)
-         this.columnString = this.data.getColumnString()
-         this.assignString = this.data.getAssignString()
-         this.where = new Parameters(where)
-         
-         this.whereString = this.where.getAssignString('AND')
-         this.questionMarkString = this.data.getQuestionMarkString()
-          
-         this.extra = new Extra(where)
-         this.extraString = this.extra.string
+    constructor(table, data, where) {
+        this.table = table
+        this.db = table.db
+        this.name = this.table.name
+        this.data = new Parameters(data)
+        this.columnString = this.data.getColumnString()
+        this.assignString = this.data.getAssignString()
+        this.where = new Parameters(where)
 
-         this.values = []
-        
+        this.whereString = this.where.getAssignString('AND')
+        this.questionMarkString = this.data.getQuestionMarkString()
 
-        if(this.where.isArray)
-        {
-                
-            this.where.keys.forEach(key=>{
+        this.extra = new Extra(where)
+        this.extraString = this.extra.string
+
+        this.values = []
+
+
+        if (this.where.isArray) {
+
+            this.where.keys.forEach(key => {
                 this.where.values.push(this.data.obj[key.name])
             })
         }
-         this.values = this.values.concat(this.data.values)
-         this.values = this.values.concat(this.where.values)
+        this.values = this.values.concat(this.data.values)
+        this.values = this.values.concat(this.where.values)
     }
-    async execute()
-    {
-        return this.table.ensure(this.data.keyNames).then(()=>{
-            return this.table.ensure(this.where.keyNames).then(()=>{
+    async execute() {
+        return this.table.ensure(this.data.keyNames).then(() => {
+            return this.table.ensure(this.where.keyNames).then(() => {
                 return this.db.run(this.getQueryString(), this.values)
             })
         })
     }
-    all()
-    {   
-        return this.table.ensure(this.data.keyNames).then(()=>{
-            return this.table.ensure(this.where.keyNames).then(()=>{
-                return this.table.ensureIndex(this.where.getIndexableColumnNames()).then(()=>{
+    all() {
+        return this.table.ensure(this.data.keyNames).then(() => {
+            return this.table.ensure(this.where.keyNames).then(() => {
+                return this.table.ensureIndex(this.where.getIndexableColumnNames()).then(() => {
                     return this.db.all(this.getQueryString(), this.values)
                 })
             })
         })
-            
+
     }
 
 
@@ -83,9 +79,9 @@ class UpdateQuery extends Query {
             this.where.keys.length != 0 ? this.whereString : ''
         ].join(' ')
     }
-    async execute(){
+    async execute() {
         const result = await super.execute()
-        return result.changes 
+        return result.changes
     }
 
 }
@@ -100,8 +96,7 @@ class DeleteQuery extends Query {
             this.where.keys.length != 0 ? this.whereString : ''
         ].join(' ')
     }
-    async execute()
-    {
+    async execute() {
         const result = await super.execute()
         return result.changes
     }
@@ -120,8 +115,7 @@ class CountQuery extends Query {
             this.where.keys.length != 0 ? this.whereString : ''
         ].join(' ')
     }
-    async execute()
-    {
+    async execute() {
         const result = await super.all()
         return result[0].count
     }
