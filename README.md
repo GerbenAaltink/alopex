@@ -11,6 +11,11 @@ Features on top of the original library:
 Missing features:
  - only support for SQLITE. Original library supports more 
 
+## Installation
+```
+npm install alopex --save
+```
+
 ## Supported filters
 Filters used below can be used by update, upsert, delete and count.
  - __eq
