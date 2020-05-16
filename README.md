@@ -1,6 +1,6 @@
-![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)
-
 # Alopex
+
+![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)
 
 This libary is a copy of https://dataset.readthedocs.io/en/latest/ 
 
