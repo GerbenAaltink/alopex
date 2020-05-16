@@ -1,5 +1,3 @@
-const NodeCache = require("node-cache");
-
 class Cache {
 
     constructor(size) {
