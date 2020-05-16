@@ -1,11 +1,16 @@
 const Key = require('./key')
 
+
+/**
+ * Parameter wrapper
+ */
 class Parameters {
 
 
     /**
-     * 
-     * @param {string, Array, Object} obj 
+     * @param {string} [obj=null] "columnName"
+     * @param {object} [obj=null] {'column1': 1, 'column2': 2}
+     * @param {array} [obj=null] ['column1', 'column2']
      */
     constructor(obj) {
         this.obj = this.normalalizeObj(obj)
@@ -34,9 +39,11 @@ class Parameters {
 
     /**
      * Convert object to valid value
-     * 
-     * @param {*} obj may be array, object or string
-     * @returns {Array, Object}
+     * @param {string} obj "columnName"
+     * @param {object} obj {'column1': 1, 'column2': 2}
+     * @param {array} obj ['column1', 'column2']
+     * @returns {array} if array or string is given
+     * @returns {object} if object or null || undefined is given
      */
     normalalizeObj(obj) {
         if (!obj)
@@ -49,7 +56,7 @@ class Parameters {
     /**
      * Columns filtered by __eq should be indexed.
      * 
-     * @returns {Array} column names which are filtered with __eq
+     * @returns {array} column names which are filtered with __eq
      */
     getIndexableColumnNames() {
         return this.keys.filter(
@@ -61,17 +68,16 @@ class Parameters {
 
     /**
      * Get assignment string to be used in SQL queries.
-     * E.g: "column1" = ?, "column2" = ?
      * 
-     * @param {string} glue default is ', '
-     * @returns {string}
+     * @param {string} [glue=", "]
+     * @returns {string} "column1" = ?, "column2" = ?
      */
     getAssignString(glue) {
         return this.keys.map(key => key.string).join(glue || ', ')
     }
 
     /**
-     * get column string to be used in SQL queries
+     * Get column string to be used in SQL queries
      * 
      * @returns {string} "*" if no fields specified. Else '"column1", "column2"'
      */
@@ -82,10 +88,9 @@ class Parameters {
     }
 
     /**
-     * Create question mark string with same length as columns to filter to be used in SQL queries
-     * E.g: "?,?,?"" if you had three columns
+     * Create comma devided question mark string with same length as columns to filter
      * 
-     * @returns {string}
+     * @returns {string} "?,?,?"
      */
     getQuestionMarkString() {
         return this.keys.map(() => '?').join(',')
