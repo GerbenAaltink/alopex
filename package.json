@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mocha": "^7.1.2",
     "sqlite-async": "^1.0.12"
+  },
+  "devDependencies": {
+    "mocha": "^7.1.2"
   }
 }
