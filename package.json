@@ -1,10 +1,11 @@
 {
   "name": "alopex",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Databases for lazy people.",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
+    "test-all": "docker-compose up --build --force-recreate",
     "docs-watch": "watch -n 1 \"npm run docs\"",
     "docs": "jsdoc -c .jsdoc.json *",
     "standard": "standard \"*.js\" --fix"
@@ -32,7 +33,6 @@
   "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
-    "sqlite3": "^4.1.1",
     "sqlite-async": "^1.0.12"
   },
   "devDependencies": {
