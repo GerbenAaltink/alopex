@@ -32,6 +32,7 @@
   "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
+    "sqlite3": "^4.1.1",
     "sqlite-async": "^1.0.12"
   },
   "devDependencies": {
