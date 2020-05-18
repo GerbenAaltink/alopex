@@ -1,4 +1,5 @@
 [![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)](https://travis-ci.com/GerbenAaltink/alopex)
+![Node.js CI](https://github.com/GerbenAaltink/alopex/workflows/Node.js%20CI/badge.svg)
 
 This libary is the NodeJS version of my favorite python module: https://dataset.readthedocs.io/en/latest/ 
 
