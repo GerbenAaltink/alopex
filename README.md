@@ -1,4 +1,3 @@
-
 [![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)](https://travis-ci.com/GerbenAaltink/alopex)
 
 This libary is the NodeJS version of my favorite python module: https://dataset.readthedocs.io/en/latest/ 
