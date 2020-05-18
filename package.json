@@ -1,14 +1,19 @@
 {
   "name": "alopex",
-  "version": "1.1.1",
-  "description": "",
+  "version": "1.1.2",
+  "description": "Databases for lazy people.",
   "main": "index.js",
   "scripts": {
     "test": "mocha",
     "docs-watch": "watch -n 1 \"jsdoc -c .jsdoc.json .\"",
     "docs": "jsdoc -c .jsdoc.json ."
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GerbenAaltink/alopex.git"
+  },
+  "keywords": ["dataset", "sqlite", "orm", "database", "sql", "data", "memory", "cache", "json", "serialize", "store", "persistent", "prototyping", "backend"],
+  "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
     "sqlite-async": "^1.0.12",

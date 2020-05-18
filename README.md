@@ -21,7 +21,7 @@ npm install alopex --save
 Giving up a database name to connect is optional. Default database if none given is ':memory:'
 ```
 const connect = require('./alopex')
-const dataSet = connect()
+const dataSet = await connect()
 ```
 
 ## Insert
