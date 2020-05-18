@@ -11,6 +11,8 @@ Features on top of the original library:
 Missing features:
  - only support for SQLITE. Original library supports more 
 
+Try it out on: https://npm.runkit.com/alopex
+
 ## Installation
 ```
 npm install -g npm@latest
@@ -20,8 +22,8 @@ npm install alopex --save
 ## Connect
 Giving up a database name to connect is optional. Default database if none given is ':memory:'
 ```
-const connect = require('./alopex')
-const dataSet = await connect()
+const alopex = require('alopex')
+const dataSet = await alopex()
 ```
 
 ## Insert
