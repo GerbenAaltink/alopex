@@ -57,12 +57,11 @@ class Table {
      *      '_limit': 50,
      *      '_offset': 10
      * })
-     * 
-     * @param {Array} [columnNames=null] - E.g: ['id', 'name']
      * @param {Object} [where=null] - E.g: {'id__like': '%a%'}
+     * @param {Array} [columnNames=null] - E.g: ['id', 'name']
      * @returns {Object[]} Array of found records
     */
-    find(columnNames, where) {
+    find(where, columnNames) {
         return this.cache.get(['find', columnNames, where], ()=>{
             let query = new Query.SelectQuery(this, columnNames, where)
             return query.execute()    
@@ -76,12 +75,12 @@ class Table {
      *      'name': 'John'
      * }))
      * 
-     * @param {string[]} [columnNames=*] 
      * @param {Object} [where={}] - E.g: {'id': 1}
+     * @param {string[]} [columnNames=null]  
      * @returns {Object} Record
      * @returns {null} if no matches
     */
-    findOne(columnNames, where) {
+    findOne(where, columnNames) {
         let whereCriteria = where ? where : {}
         whereCriteria['_limit'] = 1
         return this.cache.get(['findOne', columnNames, whereCriteria], ()=>{
