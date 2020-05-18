@@ -5,22 +5,38 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "docs-watch": "watch -n 1 \"jsdoc -c .jsdoc.json .\"",
-    "docs": "jsdoc -c .jsdoc.json ."
+    "docs-watch": "watch -n 1 \"npm run docs\"",
+    "docs": "jsdoc -c .jsdoc.json *",
+    "standard": "standard \"*.js\" --fix"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/GerbenAaltink/alopex.git"
   },
-  "keywords": ["dataset", "sqlite", "orm", "database", "sql", "data", "memory", "cache", "json", "serialize", "store", "persistent", "prototyping", "backend"],
+  "keywords": [
+    "dataset",
+    "sqlite",
+    "orm",
+    "database",
+    "sql",
+    "data",
+    "memory",
+    "cache",
+    "json",
+    "serialize",
+    "store",
+    "persistent",
+    "prototyping",
+    "backend"
+  ],
   "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
     "sqlite-async": "^1.0.12",
-    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
     "jsdoc": "^3.6.4",
-    "mocha": "^7.1.2"
+    "mocha": "^7.1.2",
+    "standard": "^14.3.4"
   }
 }
