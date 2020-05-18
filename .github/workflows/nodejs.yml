@@ -24,7 +24,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install sqlite@4.1.1
+    - run: npm install "sqlite@4.1.1"
     - run: npm install
     - run: npm run standard
     - run: npm test
