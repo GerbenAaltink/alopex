@@ -122,7 +122,7 @@ Filters used below can be used by update, upsert, delete and count.
 
 Example usage:
 ```
-db.myTable.find({'name__like'='%test%', 'id__gte'=5, '_orderBy': '-id', '_limit': 5, '_offset': 10})
+db.myTable.find({'name__like': '%test%', 'id__gte': 5, '_orderBy': '-id', '_limit': 5, '_offset': 10})
 ```
 
 ## Indexes
@@ -131,7 +131,7 @@ db.myTable.find({'name__like'='%test%', 'id__gte'=5, '_orderBy': '-id', '_limit'
 Find record method creates indexes automatically.
 For example: 
 ```
-dataSet.find('z': 1, 'y__eq': 2})
+dataSet.find({'z': 1, 'y__eq': 2})
 ```
 will create index `idx_y_z`. 
 It only applies to fields filtered with `=` operator. 

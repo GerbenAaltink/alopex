@@ -1,6 +1,6 @@
 {
   "name": "alopex",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Databases for lazy people.",
   "main": "index.js",
   "scripts": {

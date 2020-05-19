@@ -1,5 +1,20 @@
 version: '3.7'
 services:
+  node8x:
+    build: 
+      context: .
+      target: 'node8x'
+    command: sh /usr/app/entrypoint.sh
+  node9x:
+    build: 
+      context: .
+      target: 'node9x'
+    command: sh /usr/app/entrypoint.sh
+  node10x:
+    build: 
+      context: .
+      target: 'node10x'
+    command: sh /usr/app/entrypoint.sh
   node11x:
     build: 
       context: .
@@ -21,5 +36,5 @@ services:
       target: 'node11x'
     command: sh /usr/app/entrypoint-docs.sh
     volumes:
-      - ./docs:/usr/app/docs
+      - ./:/usr/app
  
