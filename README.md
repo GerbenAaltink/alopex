@@ -1,14 +1,24 @@
 [![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)](https://travis-ci.com/GerbenAaltink/alopex)
 ![Node.js CI](https://github.com/GerbenAaltink/alopex/workflows/Node.js%20CI/badge.svg)
 
-This libary is the NodeJS version of my favorite python module: https://dataset.readthedocs.io/en/latest/ 
+Easy to use data store. Can be used for persistent data in a sqlite file or just blazing fast in memory.
 
-Features on top of the original library:
- - filtering by __like or __gt like in Django ORM
- - limit fields you want to have returned while fetching data 
+Features:
+ - insert
+ - update
+ - upsert
+ - delete 
+ - count 
+ - find 
+ - findOne 
+ - automatic index creation
+ - manual index creation
+ - persistent storage
+ - memory storage 
+ - easy filtering while fetching data like in Django ORM
+ - fetching specific fields by providing an array with column names
 
-Missing features:
- - only support for SQLITE. Original library supports more 
+This libary is the NodeJS version of my favorite python module: https://dataset.readthedocs.io/en/latest/
 
 Try it out on: https://npm.runkit.com/alopex
 
@@ -121,7 +131,7 @@ db.myTable.find({'name__like'='%test%', 'id__gte'=5, '_orderBy': '-id', '_limit'
 Find record method creates indexes automatically.
 For example: 
 ```
-dataSet.find(null, 'z': 1, 'y__eq': 2})
+dataSet.find('z': 1, 'y__eq': 2})
 ```
 will create index `idx_y_z`. 
 It only applies to fields filtered with `=` operator. 
