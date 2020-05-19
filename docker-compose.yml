@@ -19,7 +19,7 @@ services:
     build: 
       context: .
       target: 'node11x'
-    command: sh /usr/app/entrypoint.sh && npm run docs
+    command: sh /usr/app/entrypoint-docs.sh
     volumes:
       - ./docs:/usr/app/docs
  
