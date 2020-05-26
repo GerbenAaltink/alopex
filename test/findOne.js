@@ -5,9 +5,9 @@ describe('Find one method', async () => {
     let dataSet = null
     beforeEach(async () => {
         dataSet = await connect()
-        await dataSet.table.insert({ 'string': 'Record 1', 'integer': 1 })
-        await dataSet.table.insert({ 'string': 'Record 0', 'integer': 0 })
-        await dataSet.table.insert({ 'string': 'Record 2', 'integer': 2 })
+        await dataSet.table.insert({ 'string': 'Record 1', 'integer': 1, 'nullable': 'null' })
+        await dataSet.table.insert({ 'string': 'Record 0', 'integer': 0, 'nullable': 'null' })
+        await dataSet.table.insert({ 'string': 'Record 2', 'integer': 2, 'nullable': null  })
     })
     describe('order by integer asc', async () => {
         it('returns record in correct order', async () => {
@@ -72,6 +72,18 @@ describe('Find one method', async () => {
             assert.ok(Object.keys(record).length == 2)
         })
     })
+    describe('__isnull=true', async()=>{
+        it('returns record where __isnull=true', async() =>{
+            const record = await dataSet.table.findOne({'nullable__isnull':true})
+            assert.ok(record.nullable == null) 
+        }) 
+    })  
+    describe('__isnull=false', async()=>{
+        it('returns record where __isnull=false', async() =>{
+            const record = await dataSet.table.findOne({'nullable__isnull':false})
+            assert.ok(record.nullable == 'null') 
+        }) 
+    })  
     describe('cache', async () => {
         it('cache hits two times and misses once', async () => {
             await dataSet.table.findOne({ '_limit': 2, '_orderBy': '-id', 'id__gt': 1 }, ['string','integer'])

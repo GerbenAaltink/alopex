@@ -17,15 +17,15 @@ class Query {
     this.extra = new Extra(where)
     this.extraString = this.extra.string
 
-    this.values = []
+    this.values = this.data.values
 
     if (this.where.isArray) {
       this.where.keys.forEach(key => {
-        this.where.values.push(this.data.obj[key.name])
+        this.values.push(this.data.obj[key.name])
       })
+    }else{
+        this.values = this.values.concat(this.where.getValues())
     }
-    this.values = this.values.concat(this.data.values)
-    this.values = this.values.concat(this.where.values)
   }
 
   async execute () {

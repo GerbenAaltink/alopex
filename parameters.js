@@ -31,7 +31,9 @@ class Parameters {
       })
     }
     this.isArray = this.keyNames.length > this.values.length
-    this.keys = this.keyNames.map(key => new Key(key))
+    this.keys = this.keyNames.map(key => {
+        return new Key(key, this.isArray ? null : this.obj[key])
+    })
   }
 
   /**
@@ -87,7 +89,11 @@ class Parameters {
      * @returns {string} "?,?,?"
      */
   getQuestionMarkString () {
-    return this.keys.map(() => '?').join(',')
+      return this.keys.filter(key=>key.isParameter === true).map(() => '?').join(',')
+  }
+
+  getValues() {
+    return this.keys.filter(key=>key.isParameter === true).map((key)=>key.value)
   }
 }
 
