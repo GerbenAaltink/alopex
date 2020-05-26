@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>alopex 1.1.8</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><p><a href="https://travis-ci.com/GerbenAaltink/alopex"><img src="https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master" alt="Build status"></a>
+<img src="https://github.com/GerbenAaltink/alopex/workflows/Node.js%20CI/badge.svg" alt="Node.js CI"></p>
+<p>Easy to use data store. Can be used for persistent data in a sqlite file or just blazing fast in memory.</p>
+<p>Features:</p>
+<ul>
+<li>insert</li>
+<li>update</li>
+<li>upsert</li>
+<li>delete</li>
+<li>count</li>
+<li>find</li>
+<li>findOne</li>
+<li>automatic index creation</li>
+<li>manual index creation</li>
+<li>persistent storage</li>
+<li>memory storage</li>
+<li>easy filtering while fetching data like in Django ORM</li>
+<li>fetching specific fields by providing an array with column names</li>
+</ul>
+<p>This libary is the NodeJS version of my favorite python module: https://dataset.readthedocs.io/en/latest/</p>
+<p>Try it out on: https://npm.runkit.com/alopex</p>
+<h2>Installation</h2>
+<pre class="prettyprint source"><code>npm install -g npm@latest
+npm install alopex --save
+</code></pre>
+<h2>Connect</h2>
+<p>Giving up a database name to connect is optional. Default database if none given is ':memory:'</p>
+<pre class="prettyprint source"><code>const alopex = require('alopex')
+const dataSet = await alopex()
+</code></pre>
+<h2>Insert</h2>
+<p>This code will create a new table called <code>myNewTable</code> and will add the required fields automatically.</p>
+<pre class="prettyprint source"><code>dataSet.myNewTable.insert({'name': 'John', 'surname': 'Snow'}).then(pk=>{
+    console.info('Inserted record has primary key', pk)
+})
+</code></pre>
+<h2>Select</h2>
+<h4>Select all columns by using null</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'name': 'John'}, null).then(records=>{
+    console.info('Found records', records)
+})
+</code></pre>
+<h4>Select specific columns by column of field names</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'name': 'John'}, ['surname']).then(records=>{
+    console.info('Found records', records)
+})
+</code></pre>
+<h4>Order by ascending</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'_orderBy': 'id'}).then(records=>{
+    console.info('Found records', records)
+})
+</code></pre>
+<h4>Order by descending</h4>
+<p>Descending sorting is done by adding <code>-</code> in front of the column name.</p>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'_orderBy': '-id'}).then(records=>{
+    console.info('Found records', records)
+})
+</code></pre>
+<h4>Limit</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'_limit': 100}).then(records=>{
+    console.info('Found 100 records', records)
+})
+</code></pre>
+<h4>Offset</h4>
+<p>Using _offset without _limit is ignored.</p>
+<pre class="prettyprint source"><code>dataSet.myNewTable.find({'_limit': 100, '_offset': 100}).then(records=>{
+    console.info('Found 100 records starting from offset 100', records)
+})
+</code></pre>
+<h2>Update</h2>
+<h4>Update using array of column names</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.update({'name': 'John', 'id': 5}, ['id']).then(updateCount=>{
+    console.info('Updated records', updateCount)
+})
+</code></pre>
+<h4>Update using object</h4>
+<pre class="prettyprint source"><code>dataSet.myNewTable.update({'name': 'John'}, {'surname__like': '%Snow%'}).then(updateCount=>{
+    console.info('Updated records', updateCount)
+})
+</code></pre>
+<h2>Delete</h2>
+<pre class="prettyprint source"><code>dataSet.myNewTable.delete({'name': 'John'}).then(changeCount=>{
+    console.info('Total deleted', changeCount)
+})
+</code></pre>
+<h2>Count</h2>
+<pre class="prettyprint source"><code>dataSet.myNewTable.count({'name': 'John'}).then(total=>{
+    console.info('Total records matcing criteria', total)
+})
+</code></pre>
+<h2>Supported filters</h2>
+<p>Filters used below can be used by update, upsert, delete and count.</p>
+<ul>
+<li>__eq</li>
+<li>__lt</li>
+<li>__lte</li>
+<li>__gt</li>
+<li>__gte</li>
+<li>__like (Case instenstive. This is default sqlite behavior)</li>
+</ul>
+<p>Example usage:</p>
+<pre class="prettyprint source"><code>db.myTable.find({'name__like': '%test%', 'id__gte': 5, '_orderBy': '-id', '_limit': 5, '_offset': 10})
+</code></pre>
+<h2>Indexes</h2>
+<h4>Automatic create</h4>
+<p>Find record method creates indexes automatically.
+For example:</p>
+<pre class="prettyprint source"><code>dataSet.find({'z': 1, 'y__eq': 2})
+</code></pre>
+<p>will create index <code>idx_y_z</code>.
+It only applies to fields filtered with <code>=</code> operator.</p>
+<h4>Manual create</h4>
+<p>Promise returns false if index already exist.</p>
+<pre class="prettyprint source"><code>dataSet.myNewTable.createIndex(['age', 'length']).then(isIndexCreated=>{
+    console.info('Created new index is ', isIndexCreated)
+})
+</code></pre></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Parameters.html">Parameters</a></li><li><a href="Table.html">Table</a></li></ul><h3>Global</h3><ul><li><a href="global.html#connect">connect</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Tue May 19 2020 14:07:38 GMT+0000 (Coordinated Universal Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
