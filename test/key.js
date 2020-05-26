@@ -133,17 +133,53 @@ describe('Key', () => {
     describe('__lte', () => {
         const key = new Key('id__lte')
 
-        it('Has correct filter', () => {
+        it('has correct filter', () => {
             assert.ok(key.filter == 'lte')
         })
-        it('Has correct operator', () => {
+        it('has correct operator', () => {
             assert.ok(key.operator == '<=')
         })
-        it('Has correct name', () => {
+        it('has correct name', () => {
             assert.ok(key.name == 'id')
         })
-        it('Has correct string', () => {
+        it('has correct string', () => {
             assert.ok(key.string == '"id" <= ?')
         })
     })
+
+   describe('__isnull == true', () => {
+        const key = new Key('id__isnull', true)
+
+        it('has correct filter', () => {
+            assert.ok(key.filter == 'isnull')
+        })
+        it('has correct operator', () => {
+            assert.ok(key.operator == null)
+        })
+        it('has correct name', () => {
+            assert.ok(key.name == 'id')
+        })
+        it('has correct string', () => {
+            assert.equal(key.string, '"id" IS NULL')
+        })
+    })
+
+   describe('__isnull == false', () => {
+        const key = new Key('id__isnull', false)
+
+        it('has correct filter', () => {
+            assert.ok(key.filter == 'isnull')
+        })
+        it('has correct operator', () => {
+            assert.ok(key.operator == null)
+        })
+        it('has correct name', () => {
+            assert.ok(key.name == 'id')
+        })
+        it('has correct string', () => {
+            assert.equal(key.string, '"id" IS NOT NULL')
+        })
+    })
+
+
 })

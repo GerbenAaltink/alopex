@@ -7,7 +7,7 @@ class Key {
       gt: '>',
       gte: '>=',
       like: 'LIKE',
-      isnull: 'IS NULL'
+      isnull: null
     }
     const parts = name.split('__')
     this.name = parts[0]
@@ -26,9 +26,9 @@ class Key {
     {
         if(this.value === false)
         {
-            this.string = `${this.name} IS NOT NULL`
+            this.string = `"${this.name}" IS NOT NULL`
         }else{
-            this.string = `${this.name} IS NULL` 
+            this.string = `"${this.name}" IS NULL` 
         }
     }
   }

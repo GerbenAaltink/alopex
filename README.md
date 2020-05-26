@@ -118,11 +118,12 @@ Filters used below can be used by update, upsert, delete and count.
  - __lte
  - __gt
  - __gte
+ - __isnull
  - __like (Case instenstive. This is default sqlite behavior)
 
 Example usage:
 ```
-db.myTable.find({'name__like': '%test%', 'id__gte': 5, '_orderBy': '-id', '_limit': 5, '_offset': 10})
+dataSet.myTable.find({'name__like': '%test%', 'age__isnull': false, 'id__gte': 5, '_orderBy': '-id', '_limit': 5, '_offset': 10})
 ```
 
 ## Indexes
