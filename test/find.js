@@ -86,13 +86,19 @@ describe('Find method', async () => {
         }) 
     })    
     describe('__isnull=False', async()=>{
-        it('returns only records where __isnull=True', async() =>{
+        it('returns only records where __isnull=False', async() =>{
             const records = await dataSet.table.find({'nullable__isnull':false})
             assert.ok(records.length == 2)
             assert.ok(records[0].nullable == 'null') 
             assert.ok(records[1].nullable == 'null') 
         }) 
-    })    
+    })   
+    describe('__isnull=False with other clause', async()=>{
+        it('returns only records where __isnull=False', async()=>{
+            const records = await dataSet.table.find({'nullable__isnull':false, 'name__like': 'Record%'})
+            assert.ok(records.length=2)
+        })
+    })
     describe('cache', async () => {
         it('cache hits two times and misses once', async () => {
             await dataSet.table.find({'_limit': 2, '_orderBy': '-id', 'id__gt': 1 }, ['string', 'integer'])

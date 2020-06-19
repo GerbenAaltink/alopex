@@ -11,7 +11,7 @@ class Query {
     this.assignString = this.data.getAssignString()
     this.where = new Parameters(where)
 
-    this.whereString = this.where.getAssignString('AND')
+    this.whereString = this.where.getAssignString(' AND ')
     this.questionMarkString = this.data.getQuestionMarkString()
 
     this.extra = new Extra(where)
@@ -41,6 +41,11 @@ class Query {
       return this.table.ensure(this.where.keyNames).then(() => {
         return this.table.ensureIndex(this.where.getIndexableColumnNames()).then(() => {
           return this.db.all(this.getQueryString(), this.values)
+                .catch(error=>{
+                    console.error(error)
+                    console.error(this.getQueryString())
+                    console.error(this.values)
+                })
         })
       })
     })
