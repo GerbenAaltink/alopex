@@ -13,7 +13,7 @@ class Key {
     this.name = parts[0]
     this.value = value
     this.filter = (parts.length > 1 ? parts[1] : 'eq').toLowerCase()
-    this.isParameter = this.filter != 'isnull' 
+    this.isParameter = this.filter !== 'isnull' 
     this.operator = this.filters[this.filter]
     if (this.operator === undefined) {
       this.operator = '='
