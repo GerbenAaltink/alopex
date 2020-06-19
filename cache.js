@@ -25,14 +25,18 @@ class Cache {
   }
 
   _updateCache () {
-    if (this.recentKeys.length < this.size) { return false }
+    if (this.recentKeys.length < this.size) {
+      return false
+    }
     const recentKey = this.recentKeys.pop()
     delete this._cached[recentKey]
     return true
   }
 
   get (params, promise) {
-    if (!this.enabled) { return promise() }
+    if (!this.enabled) {
+      return promise()
+    }
     const cacheKey = this._generateKey(params)
     this._updateRecentKey(cacheKey)
     if (this._cached[cacheKey] !== undefined) {

@@ -1,4 +1,3 @@
-
 class Extra {
   constructor (obj) {
     if (obj === undefined || obj === null || Array.isArray(obj)) {

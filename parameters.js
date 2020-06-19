@@ -32,7 +32,7 @@ class Parameters {
     }
     this.isArray = this.keyNames.length > this.values.length
     this.keys = this.keyNames.map(key => {
-        return new Key(key, this.isArray ? null : this.obj[key])
+      return new Key(key, this.isArray ? null : this.obj[key])
     })
   }
 
@@ -45,8 +45,12 @@ class Parameters {
      * @returns {object} if object or null || undefined is given
      */
   normalalizeObj (obj) {
-    if (!obj) { return {} }
-    if (typeof (obj) === 'string') { return [obj] }
+    if (!obj) {
+      return {}
+    }
+    if (typeof (obj) === 'string') {
+      return [obj]
+    }
     return obj
   }
 
@@ -79,7 +83,9 @@ class Parameters {
      * @returns {string} "*" if no fields specified. Else '"column1", "column2"'
      */
   getColumnString () {
-    if (this.keys.length === 0) { return '*' }
+    if (this.keys.length === 0) {
+      return '*'
+    }
     return '"' + this.keyNames.join('","') + '"'
   }
 
@@ -89,11 +95,11 @@ class Parameters {
      * @returns {string} "?,?,?"
      */
   getQuestionMarkString () {
-      return this.keys.filter(key=>key.isParameter === true).map(() => '?').join(',')
+    return this.keys.filter(key => key.isParameter === true).map(() => '?').join(',')
   }
 
-  getValues() {
-    return this.keys.filter(key=>key.isParameter === true).map((key)=>key.value)
+  getValues () {
+    return this.keys.filter(key => key.isParameter === true).map((key) => key.value)
   }
 }
 

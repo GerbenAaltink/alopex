@@ -61,7 +61,7 @@ class Table {
      * @param {Object} [where=null] - E.g: {'id__like': '%a%'}
      * @param {Array} [columnNames=null] - E.g: ['id', 'name']
      * @returns {Object[]} Array of found records
-    */
+     */
   find (where, columnNames) {
     return this.cache.get(['find', columnNames, where], () => {
       const query = new Query.SelectQuery(this, columnNames, where)
@@ -81,7 +81,7 @@ class Table {
      * @param {string[]} [columnNames=null]
      * @returns {Object} Record
      * @returns {null} if no matches
-    */
+     */
   findOne (where, columnNames) {
     const whereCriteria = where || {}
     whereCriteria._limit = 1
@@ -147,8 +147,8 @@ class Table {
     return this.update(data, where).then(changeCount => {
       return changeCount ? true : this.insert(data)
     }).then((result) => {
-        this.cache.flush()
-        return result
+      this.cache.flush()
+      return result
     })
   }
 
@@ -161,7 +161,9 @@ class Table {
 
   ensureIndex (names) {
     return new Promise((resolve, reject) => {
-      if (names.length < 2) { return resolve(false) }
+      if (names.length < 2) {
+        return resolve(false)
+      }
       names.sort()
       const indexName = 'idx_' + names.join('_')
       if (this.indexes.indexOf(indexName) !== -1) {

@@ -23,40 +23,36 @@ class Query {
       this.where.keys.forEach(key => {
         this.values.push(this.data.obj[key.name])
       })
-    }else{
-        this.values = this.values.concat(this.where.getValues())
+    } else {
+      this.values = this.values.concat(this.where.getValues())
     }
   }
 
   async execute () {
-      return new Promise(async (resolve, reject)=> {
-        await this.table.ensure(this.data.keyNames)
-        await this.table.ensure(this.where.keyNames)
-          this.db.run(this.getQueryString(), this.values)
-              .then(resolve)
-              .catch(error=>{
-                console.error(error)
-                console.error(this.getQueryString())
-                console.error(this.values)
-                reject(error)
-              })
-            
-      })
-    }
+    return this.table.ensure(this.data.keyNames).then(() => {
+      return this.table.ensure(this.where.keyNames)
+    }).then(() => {
+      return this.db.run(this.getQueryString(), this.values)
+    }).catch(error => {
+      console.error(error)
+      console.error(this.getQueryString())
+      console.error(this.values)
+      return error
+    })
+  }
 
   all () {
-    return new Promise(async (resolve, reject)=> {
-        await this.table.ensure(this.data.keyNames)
-        await this.table.ensure(this.where.keyNames)
-        await this.table.ensureIndex(this.where.getIndexableColumnNames())
-        this.db.all(this.getQueryString(), this.values)
-            .then(resolve)
-            .catch(error=>{
-                console.error(error)
-                console.error(this.getQueryString())
-                console.error(this.values)
-                reject(error)
-            })
+    return this.table.ensure(this.data.keyNames).then(() => {
+      return this.table.ensure(this.where.keyNames)
+    }).then(() => {
+      return this.table.ensureIndex(this.where.getIndexableColumnNames())
+    }).then(() => {
+      return this.db.all(this.getQueryString(), this.values)
+    }).catch(error => {
+      console.error(error)
+      console.error(this.getQueryString())
+      console.error(this.values)
+      return error
     })
   }
 }
