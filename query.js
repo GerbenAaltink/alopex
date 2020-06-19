@@ -29,25 +29,34 @@ class Query {
   }
 
   async execute () {
-    return this.table.ensure(this.data.keyNames).then(() => {
-      return this.table.ensure(this.where.keyNames).then(() => {
-        return this.db.run(this.getQueryString(), this.values)
+      return new Promise(async (resolve, reject)=> {
+        await this.table.ensure(this.data.keyNames)
+        await this.table.ensure(this.where.keyNames)
+          this.db.run(this.getQueryString(), this.values)
+              .then(resolve)
+              .catch(error=>{
+                console.error(error)
+                console.error(this.getQueryString())
+                console.error(this.values)
+                reject(error)
+              })
+            
       })
-    })
-  }
+    }
 
   all () {
-    return this.table.ensure(this.data.keyNames).then(() => {
-      return this.table.ensure(this.where.keyNames).then(() => {
-        return this.table.ensureIndex(this.where.getIndexableColumnNames()).then(() => {
-          return this.db.all(this.getQueryString(), this.values)
-                .catch(error=>{
-                    console.error(error)
-                    console.error(this.getQueryString())
-                    console.error(this.values)
-                })
-        })
-      })
+    return new Promise(async (resolve, reject)=> {
+        await this.table.ensure(this.data.keyNames)
+        await this.table.ensure(this.where.keyNames)
+        await this.table.ensureIndex(this.where.getIndexableColumnNames())
+        this.db.all(this.getQueryString(), this.values)
+            .then(resolve)
+            .catch(error=>{
+                console.error(error)
+                console.error(this.getQueryString())
+                console.error(this.values)
+                reject(error)
+            })
     })
   }
 }
