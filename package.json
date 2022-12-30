@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "jsdoc": "^3.6.4",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "standard": "^14.3.4"
   }
 }
