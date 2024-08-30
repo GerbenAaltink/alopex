@@ -17,16 +17,16 @@ const Cache = require('./cache')
  * @property {bool} initialized is true if table exists, columns are loaded and indexes are loaded
  */
 class Table {
-  constructor (db, name) {
-    this.db = db
-    this.name = name
-    this.indexes = []
-    this.columns = []
-    this.initialized = false
-    this.cache = new Cache(2)
-  }
+    constructor(db, name) {
+        this.db = db
+        this.name = name
+        this.indexes = []
+        this.columns = []
+        this.initialized = false
+        this.cache = new Cache(2)
+    }
 
-  /**
+    /**
      * Creates new record. Supported field types:
      *  - string
      *  - integer
@@ -39,15 +39,15 @@ class Table {
      * @param {Object} {'columnName':'value'}
      * @returns {number} primary key of created record
      */
-  insert (data) {
-    const query = new Query.InsertQuery(this, data)
-    return query.execute().then((primaryKey) => {
-      this.cache.flush()
-      return primaryKey
-    })
-  }
+    insert(data) {
+        const query = new Query.InsertQuery(this, data)
+        return query.execute().then((primaryKey) => {
+            this.cache.flush()
+            return primaryKey
+        })
+    }
 
-  /**
+    /**
      * Find multiple records
      *
      * @example
@@ -62,14 +62,14 @@ class Table {
      * @param {Array} [columnNames=null] - E.g: ['id', 'name']
      * @returns {Object[]} Array of found records
      */
-  find (where, columnNames) {
-    return this.cache.get(['find', columnNames, where], () => {
-      const query = new Query.SelectQuery(this, columnNames, where)
-      return query.execute()
-    })
-  }
+    find(where, columnNames) {
+        return this.cache.get(['find', columnNames, where], () => {
+            const query = new Query.SelectQuery(this, columnNames, where)
+            return query.execute()
+        })
+    }
 
-  /**
+    /**
      * Find one record
      *
      * @example
@@ -82,18 +82,18 @@ class Table {
      * @returns {Object} Record
      * @returns {null} if no matches
      */
-  findOne (where, columnNames) {
-    const whereCriteria = where || {}
-    whereCriteria._limit = 1
-    return this.cache.get(['findOne', columnNames, whereCriteria], () => {
-      const query = new Query.SelectQuery(this, columnNames, where)
-      return query.execute().then(rows => {
-        return rows[0]
-      })
-    })
-  }
+    findOne(where, columnNames) {
+        const whereCriteria = where || {}
+        whereCriteria._limit = 1
+        return this.cache.get(['findOne', columnNames, whereCriteria], () => {
+            const query = new Query.SelectQuery(this, columnNames, where)
+            return query.execute().then(rows => {
+                return rows[0]
+            })
+        })
+    }
 
-  /**
+    /**
      *
      * @example <caption>Update with column name array as where clause</caption>
      * const changedRecordCount = await this.update({
@@ -124,117 +124,117 @@ class Table {
      * @param {Object} where values that should match
      * @param {string[]} where field names of values that should match
      */
-  update (data, where) {
-    // returns update count
-    const query = new Query.UpdateQuery(this, data, where)
-    return query.execute().then((updatedCount) => {
-      this.cache.flush()
-      return updatedCount
-    })
-  }
+    update(data, where) {
+        // returns update count
+        const query = new Query.UpdateQuery(this, data, where)
+        return query.execute().then((updatedCount) => {
+            this.cache.flush()
+            return updatedCount
+        })
+    }
 
-  delete (where) {
-    // returns deleted count
-    const query = new Query.DeleteQuery(this, null, where)
-    return query.execute().then((deletedCount) => {
-      this.cache.flush()
-      return deletedCount
-    })
-  }
+    delete(where) {
+        // returns deleted count
+        const query = new Query.DeleteQuery(this, null, where)
+        return query.execute().then((deletedCount) => {
+            this.cache.flush()
+            return deletedCount
+        })
+    }
 
-  upsert (data, where) {
-    // returns true if updated, else new primary key
-    return this.update(data, where).then(changeCount => {
-      return changeCount ? true : this.insert(data)
-    }).then((result) => {
-      this.cache.flush()
-      return result
-    })
-  }
+    upsert(data, where) {
+        // returns true if updated, else new primary key
+        return this.update(data, where).then(changeCount => {
+            return changeCount ? true : this.insert(data)
+        }).then((result) => {
+            this.cache.flush()
+            return result
+        })
+    }
 
-  count (where) {
-    return this.cache.get(['count', where], () => {
-      const query = new Query.CountQuery(this, null, where)
-      return query.execute()
-    })
-  }
+    count(where) {
+        return this.cache.get(['count', where], () => {
+            const query = new Query.CountQuery(this, null, where)
+            return query.execute()
+        })
+    }
 
-  ensureIndex (names) {
-    return new Promise((resolve, reject) => {
-      if (names.length < 2) {
-        return resolve(false)
-      }
-      names.sort()
-      const indexName = 'idx_' + names.join('_')
-      if (this.indexes.indexOf(indexName) !== -1) {
-        return resolve(false)
-      }
-      const nameString = names.join(',')
+    ensureIndex(names) {
+        return new Promise((resolve, reject) => {
+            if (names.length < 2) {
+                return resolve(false)
+            }
+            names.sort()
+            const indexName = 'idx_' + names.join('_')
+            if (this.indexes.indexOf(indexName) !== -1) {
+                return resolve(false)
+            }
+            const nameString = names.join(',')
 
-      const query = [
-        'CREATE INDEX',
-        indexName,
-        'ON',
+            const query = [
+                'CREATE INDEX',
+                indexName,
+                'ON',
                 `"${this.name}"`,
                 `(${nameString})`
-      ].join(' ')
-      this.indexes.push(indexName)
-      this.db.run(query, []).then(resolve)
-    })
-  }
-
-  async ensure (obj) {
-    if (!this.initialized) {
-      this.initialized = true
-      await this.createTable()
-      this.columns = await this.getColumns()
-      this.indexes = await this.getIndexes()
+            ].join(' ')
+            this.indexes.push(indexName)
+            this.db.run(query, []).then(resolve)
+        })
     }
-    obj = obj || {}
-    const params = new Parameters(obj)
-    const promises = []
-    params.keys.filter(
-      key => this.columns.indexOf(key.name) === -1
-    ).map((key) => {
-      promises.push(this.addColumn(key.name))
-    })
 
-    return Promise.all(promises)
-  }
+    async ensure(obj) {
+        if (!this.initialized) {
+            this.initialized = true
+            await this.createTable()
+            this.columns = await this.getColumns()
+            this.indexes = await this.getIndexes()
+        }
+        obj = obj || {}
+        const params = new Parameters(obj)
+        const promises = []
+        params.keys.filter(
+            key => this.columns.indexOf(key.name) === -1
+        ).map((key) => {
+            promises.push(this.addColumn(key.name))
+        })
 
-  createTable () {
-    return this.db.run(`CREATE TABLE IF NOT EXISTS "${this.name}" (id INTEGER PRIMARY KEY)`)
-  }
+        return Promise.all(promises)
+    }
 
-  async getColumns () {
-    const result = await this.db.all('SELECT name FROM PRAGMA_TABLE_INFO(?)', [this.name])
-    const names = []
-    result.forEach(row => {
-      names.push(row.name)
-    })
-    return names
-  }
+    createTable() {
+        return this.db.run(`CREATE TABLE IF NOT EXISTS "${this.name}" (id INTEGER PRIMARY KEY)`)
+    }
 
-  getIndexes () {
-    return this.db.all('select name FROM sqlite_master WHERE tbl_name = ? AND type="index"', [this.name]).then(indexes => {
-      return indexes.map((row) => {
-        return row.name
-      })
-    })
-  }
+    async getColumns() {
+        const result = await this.db.all('SELECT name FROM PRAGMA_TABLE_INFO(?)', [this.name])
+        const names = []
+        result.forEach(row => {
+            names.push(row.name)
+        })
+        return names
+    }
 
-  async addColumn (name) {
-    const query = [
-      'ALTER TABLE',
+    getIndexes() {
+        return this.db.all('select name FROM sqlite_master WHERE tbl_name = ? AND type="index"', [this.name]).then(indexes => {
+            return indexes.map((row) => {
+                return row.name
+            })
+        })
+    }
+
+    async addColumn(name) {
+        const query = [
+            'ALTER TABLE',
             `"${this.name}"`,
             'ADD COLUMN ',
             `"${name}";`
-    ].join(' ')
-    this.columns.push(name)
-    return this.db.run(query, []).then(() => {
-      this.cache.flush()
-    })
-  }
+        ].join(' ')
+        this.columns.push(name)
+        return this.db.run(query, []).then(() => {
+            this.cache.flush()
+        })
+    }
 }
 
 module.exports = Table

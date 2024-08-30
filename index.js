@@ -22,12 +22,12 @@ const TableProxy = require('./proxy')
  * @param {string} [name=":memory:"]
  * @returns {Object} new Alopex instance.
  */
-function connect (name) {
-  const dbName = name || ':memory:'
-  return Database.open(dbName).then((db) => {
-    db.dbName = dbName
-    return new Proxy(db, TableProxy)
-  })
+function connect(name) {
+    const dbName = name || ':memory:'
+    return Database.open(dbName).then((db) => {
+        db.dbName = dbName
+        return new Proxy(db, TableProxy)
+    })
 }
 
 module.exports = connect
