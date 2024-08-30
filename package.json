@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GerbenAaltink/alopex.git"
+    "url": "git+https://github.com/GerbenAaltink/alopex.git"
   },
   "keywords": [
     "dataset",
@@ -40,5 +40,13 @@
     "jsdoc": "^3.6.4",
     "mocha": "^10.2.0",
     "standard": "^14.3.4"
+  },
+  "bugs": {
+    "url": "https://github.com/GerbenAaltink/alopex/issues"
+  },
+  "homepage": "https://github.com/GerbenAaltink/alopex#readme",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
   }
 }
