@@ -1,4 +1,3 @@
-const Database = require('sqlite-async')
 const TableProxy = require('./proxy')
 
 /**
@@ -22,9 +21,10 @@ const TableProxy = require('./proxy')
  * @param {string} [name=":memory:"]
  * @returns {Object} new Alopex instance.
  */
-function connect(name) {
+async function connect(name) {
     const dbName = name || ':memory:'
-    return Database.open(dbName).then((db) => {
+    const sqlite3Async = await import('sqlite-async');
+    return sqlite3Async.Database.open(dbName).then((db) => {
         db.dbName = dbName
         return new Proxy(db, TableProxy)
     })

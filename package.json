@@ -1,6 +1,6 @@
 {
   "name": "alopex",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "description": "Databases for lazy people.",
   "main": "index.js",
   "scripts": {
@@ -33,11 +33,11 @@
   "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
-    "sqlite-async": "1.0.12",
-    "sqlite3": "4.2.0"
+    "sqlite-async": "^1.2.0",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.11",
+    "jsdoc": "^4.0.3",
     "mocha": "^10.7.3",
     "standard": "^14.3.4"
   },
