@@ -1,6 +1,3 @@
-[![Build status](https://travis-ci.com/GerbenAaltink/alopex.svg?branch=master)](https://travis-ci.com/GerbenAaltink/alopex)
-![Node.js CI](https://github.com/GerbenAaltink/alopex/workflows/Node.js%20CI/badge.svg)
-
 Easy to use data store. Can be used for persistent data in a sqlite file or just blazing fast in memory.
 
 Features:
