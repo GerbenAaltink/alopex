@@ -1,4 +1,4 @@
-#Alopex
+# Alopex
 
 Alope is an easy to use data store. It can be used for persistent data in a sqlite file or just blazing fast in memory. It automatically synchronizes schema when you have have new fields or a new table. 
 
