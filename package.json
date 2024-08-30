@@ -33,12 +33,12 @@
   "author": "Gerben Aaltink",
   "license": "ISC",
   "dependencies": {
-    "sqlite-async": "^1.0.12",
+    "sqlite-async": "1.0.12",
     "sqlite3": "4.1.1"
   },
   "devDependencies": {
-    "jsdoc": "^3.6.4",
-    "mocha": "^10.2.0",
+    "jsdoc": "^3.6.11",
+    "mocha": "^10.7.3",
     "standard": "^14.3.4"
   },
   "bugs": {
