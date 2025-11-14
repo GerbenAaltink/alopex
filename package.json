@@ -39,7 +39,7 @@
   "devDependencies": {
     "jsdoc": "^4.0.3",
     "mocha": "^10.7.3",
-    "standard": "^14.3.4"
+    "standard": "^17.1.2"
   },
   "bugs": {
     "url": "https://github.com/GerbenAaltink/alopex/issues"
